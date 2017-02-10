@@ -18,12 +18,14 @@
         self.Local = {
             Set: self.setLocal,
             Read: self.readLocal,
+            ReadJSON: self.readJSONLocal,
             Remove: self.removeLocal
         };
 
         self.Session = {
             Set: self.setSession,
             Read: self.readSession,
+            ReadJSON: self.readJSONSession,
             Remove: self.removeSession
         };
     };
@@ -44,6 +46,12 @@
     Persist.prototype.readLocal =  function (key) {
         if (window.localStorage[key]) {
             return JSON.parse(window.localStorage[key]);
+        }
+    };
+
+    Persist.prototype.readJSONLocal =  function(key) {
+        if (window.localStorage[key]) {
+            return window.localStorage[key];
         }
     };
 
@@ -71,10 +79,16 @@
         };
 
     Persist.prototype.readSession = function (key) {
-            if (window.sessionStorage[key]) {
-                return JSON.parse(window.sessionStorage[key]);
-            }
-        };
+        if (window.sessionStorage[key]) {
+            return JSON.parse(window.sessionStorage[key]);
+        }
+    };
+
+    Persist.prototype.readJSONSession =  function(key) {
+        if (window.sessionStorage[key]) {
+            return window.sessionStorage[key];
+        }
+    };
 
     Persist.prototype.removeSession = function (key, callback) {
         if (window.sessionStorage[key]) {
@@ -86,6 +100,6 @@
 
     };
 
-    new Persist();
+    return new Persist();
 }));
 
