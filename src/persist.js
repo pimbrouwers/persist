@@ -1,6 +1,7 @@
 /*
-	Persist JS 0.0.2
-	license: MIT	
+	Persist JS 0.0.3
+    Author: Pim Brouwers
+	License: MIT	
 */
 (function (root, factory) {
     if (typeof define === "function" && define.amd) {
@@ -11,42 +12,55 @@
         root.PersistJS = factory();
     }
 }(this, function () {
-    var PersistJS = {};
+    function Persist(){
+        var self = this;
+        
+        self.Local = {
+            Set: self.setLocal,
+            Read: self.readLocal,
+            Remove: self.removeLocal
+        };
+
+        self.Session = {
+            Set: self.setSession,
+            Read: self.readSession,
+            Remove: self.removeSession
+        };
+    };
 
     /**
     * Local Storage Hooks
     */
-    PersistJS.Local = {
-        Set: function (key, data) {
-            if (key && data) {
-                var data = JSON.stringify(data);
+    Persist.prototype.setLocal = function (key, data) {
+        if (key && data) {
+            var data = JSON.stringify(data);
 
-                if (typeof (Storage) !== "undefined") {
-                    window.localStorage.setItem(key, data);
-                }
+            if (typeof (Storage) !== "undefined") {
+                window.localStorage.setItem(key, data);
             }
-        },
-        Read: function (key) {
-            if (window.localStorage[key]) {
-                return JSON.parse(window.localStorage[key]);
-            }
-        },
-        Remove: function (key, callback) {
-            if (window.localStorage[key]) {
-                window.localStorage.removeItem(key);
-                if (callback) callback();
-            }
-            else
-                if (callback) callback();
-
         }
     };
+
+    Persist.prototype.readLocal =  function (key) {
+        if (window.localStorage[key]) {
+            return JSON.parse(window.localStorage[key]);
+        }
+    };
+
+    Persist.prototype.removeLocal = function (key, callback) {
+        if (window.localStorage[key]) {
+            window.localStorage.removeItem(key);
+            if (callback) callback();
+        }
+        else
+            if (callback) callback();
+    };
+
 
     /**
     * Session Storage Hooks
     */
-    PersistJS.Session = {
-        Set: function (key, data) {
+    Persist.prototype.setSession = function (key, data) {
             if (key && data) {
                 var data = JSON.stringify(data);
 
@@ -54,23 +68,24 @@
                     window.sessionStorage.setItem(key, data);
                 }
             }
-        },
-        Read: function (key) {
+        };
+
+    Persist.prototype.readSession = function (key) {
             if (window.sessionStorage[key]) {
                 return JSON.parse(window.sessionStorage[key]);
             }
-        },
-        Remove: function (key, callback) {
-            if (window.sessionStorage[key]) {
-                window.sessionStorage.removeItem(key);
-                if (callback) callback();
-            }
-            else
-                if (callback) callback();
+        };
 
+    Persist.prototype.removeSession = function (key, callback) {
+        if (window.sessionStorage[key]) {
+            window.sessionStorage.removeItem(key);
+            if (callback) callback();
         }
+        else
+            if (callback) callback();
+
     };
 
-    return PersistJS;
+    new Persist();
 }));
 
