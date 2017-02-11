@@ -23,12 +23,12 @@ define(['../path/to/persist'], function(Persist){
 //Local Storage
 PersistJS.Local.Set('someKey', { someValue: 1 });
 PersistJS.Local.Read('someKey');
-Persist.Local.ReadJSON('someKey');
+PersistJS.Local.ReadJSON('someKey');
 PersistJS.Local.Remove('someKey');
 
 //Session Storage
 PersistJS.Session.Set('someKey', { someValue: 1 });
 PersistJS.Session.Read('someKey');
-Persist.Session.ReadJSON('someKey');
+PersistJS.Session.ReadJSON('someKey');
 PersistJS.Session.Remove('someKey');
 ```
