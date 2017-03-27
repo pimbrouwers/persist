@@ -1,6 +1,6 @@
 /*
-	Persist JS 0.0.3
-    Author: Pim Brouwers
+	Persist JS 0.0.4
+	Author: Pim Brouwers
 	License: MIT	
 */
 (function (root, factory) {
@@ -12,10 +12,12 @@
         root.PersistJS = factory();
     }
 }(this, function () {
-    function Persist(){
+    function Persist() {
         var self = this;
-        
+
         self.Local = {
+            Clear: self.clearLocal,
+            Push: self.pushLocal,
             Set: self.setLocal,
             Read: self.readLocal,
             ReadJSON: self.readJSONLocal,
@@ -23,6 +25,8 @@
         };
 
         self.Session = {
+            Clear: self.clearSession,
+            Push: self.pushSession,
             Set: self.setSession,
             Read: self.readSession,
             ReadJSON: self.readJSONSession,
@@ -34,7 +38,11 @@
     * Local Storage Hooks
     */
     Persist.prototype.setLocal = function (key, data) {
-        if (key && data) {
+        if (typeof key !== 'undefined' &&
+            key !== null && 
+            typeof data !== 'undefined' &&
+            data !== null) 
+        {
             var data = JSON.stringify(data);
 
             if (typeof (Storage) !== "undefined") {
@@ -43,13 +51,13 @@
         }
     };
 
-    Persist.prototype.readLocal =  function (key) {
+    Persist.prototype.readLocal = function (key) {
         if (window.localStorage[key]) {
             return JSON.parse(window.localStorage[key]);
         }
     };
 
-    Persist.prototype.readJSONLocal =  function(key) {
+    Persist.prototype.readJSONLocal = function (key) {
         if (window.localStorage[key]) {
             return window.localStorage[key];
         }
@@ -64,19 +72,50 @@
             if (callback) callback();
     };
 
+    Persist.prototype.clearLocal = function(){
+        if(window.localStorage) {
+            window.localStorage.clear();
+        }
+    };
+
+    Persist.prototype.pushLocal = function (key, data){
+        var self = this;
+
+        (typeof key !== 'undefined' &&
+            key !== null && 
+            typeof data !== 'undefined' &&
+            data !== null) 
+        {
+            var ary = [];
+            ary = self.Read(key);
+
+            if(ary && ary.constructor === Array){
+                ary.push(data);                
+            }
+            else if (typeof ary === 'undefined' || ary === null){
+                ary = [data];
+            }
+
+            self.Set(key, ary);
+        }
+    };
 
     /**
     * Session Storage Hooks
     */
     Persist.prototype.setSession = function (key, data) {
-            if (key && data) {
-                var data = JSON.stringify(data);
+        (typeof key !== 'undefined' &&
+            key !== null && 
+            typeof data !== 'undefined' &&
+            data !== null) 
+        {
+            var data = JSON.stringify(data);
 
-                if (typeof (Storage) !== "undefined") {
-                    window.sessionStorage.setItem(key, data);
-                }
+            if (typeof (Storage) !== "undefined") {
+                window.sessionStorage.setItem(key, data);
             }
-        };
+        }
+    };
 
     Persist.prototype.readSession = function (key) {
         if (window.sessionStorage[key]) {
@@ -84,7 +123,7 @@
         }
     };
 
-    Persist.prototype.readJSONSession =  function(key) {
+    Persist.prototype.readJSONSession = function (key) {
         if (window.sessionStorage[key]) {
             return window.sessionStorage[key];
         }
@@ -98,6 +137,34 @@
         else
             if (callback) callback();
 
+    };
+
+    Persist.prototype.clearSession = function(){
+        if(window.sessionStorage) {
+            window.sessionStorage.clear();
+        }
+    };
+
+    Persist.prototype.pushSession = function (key, data){
+        var self = this;
+
+        (typeof key !== 'undefined' &&
+            key !== null && 
+            typeof data !== 'undefined' &&
+            data !== null) 
+        {
+            var ary = [];
+            ary = self.Read(key);
+
+            if(ary && ary.constructor === Array){
+                ary.push(data);                
+            }
+            else if (typeof ary === 'undefined' || ary === null){
+                ary = [data];
+            }
+
+            self.Set(key, ary);
+        }
     };
 
     return new Persist();
