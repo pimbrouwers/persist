@@ -1,6 +1,11 @@
 # PersistJS
 JavaScript Library to facilitate client-side persistence. Includes helpers for: local and session storage.
 
+## Getting Started
+
+### Install
+`npm i --save persistjs`
+
 ### AMD Usage
 ```javascript
 define(['../path/to/persist'], function(Persist){
