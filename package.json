@@ -1,0 +1,27 @@
+{
+  "name": "persist-js",
+  "version": "1.0.0",
+  "description": "JavaScript Library to facilitate client-side persistence",
+  
+  "devDependencies": {
+    "uglify-js": "latest"
+  },
+
+  "scripts": {
+    "compile": "uglifyjs ./src/persist.js --compress --output ./dist/persist.min.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/pimbrouwers/PersistJS.git"
+  },
+  "keywords": [
+    "local storage",
+    "session storage"
+  ],
+  "author": "Pim Brouwers",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/pimbrouwers/PersistJS/issues"
+  },
+  "homepage": "https://github.com/pimbrouwers/PersistJS#readme"
+}
